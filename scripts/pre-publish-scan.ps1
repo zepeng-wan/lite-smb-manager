@@ -5,7 +5,16 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 Push-Location $projectRoot
 try {
-    $files = rg --files --hidden -g '!.git/**' -g '!发布要求.md'
+    if (Get-Command rg -ErrorAction SilentlyContinue) {
+        $files = rg --files --hidden -g '!.git/**' -g '!发布要求.md'
+    }
+    else {
+        $files = Get-ChildItem -LiteralPath $projectRoot -Recurse -Force -File -ErrorAction SilentlyContinue |
+            Where-Object {
+                $_.FullName -notmatch '[\\/]\.git[\\/]' -and $_.Name -ne '发布要求.md'
+            } |
+            ForEach-Object FullName
+    }
     $patterns = @(
         '(?i)github_pat_[a-z0-9_]{20,}',
         '(?i)gh[pousr]_[a-z0-9_]{20,}',
