@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lite-smb-manager"
+version = "1.0.1"
+description = "Windows SMB network drive manager"
+requires-python = ">=3.12"
+# Essentials provides the PySide6 Core/Gui/Widgets modules used by this application;
+# avoiding the unrelated Addons bundle keeps the portable package smaller.
+dependencies = ["PySide6-Essentials>=6.8,<6.10"]
+
+[project.optional-dependencies]
+dev = [
+  "mypy>=1.13,<2",
+  "pyinstaller>=6.11,<7",
+  "pytest>=8.3,<9",
+  "pytest-cov>=6,<7",
+  "pytest-qt>=4.4,<5",
+  "ruff>=0.8,<1",
+]
+
+[project.scripts]
+lite-smb-manager = "lite_smb_manager.bootstrap:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+markers = ["integration: requires an explicitly configured real Windows SMB server"]
+qt_api = "pyside6"
+
+[tool.coverage.run]
+branch = true
+source = ["lite_smb_manager.domain", "lite_smb_manager.application"]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+skip_covered = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = "src"
+exclude = ["build", "dist"]

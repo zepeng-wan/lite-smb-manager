@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: windows-latest
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Create development environment
+        run: .\scripts\setup.ps1 -Dev
+      - name: Format, lint, types, tests and coverage
+        run: .\scripts\test.ps1
+      - name: Sensitive data scan
+        run: .\scripts\security-scan.ps1

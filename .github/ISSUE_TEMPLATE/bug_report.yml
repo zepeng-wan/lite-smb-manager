@@ -1,0 +1,35 @@
+name: Bug report
+description: Report a reproducible problem without credentials or private network data.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include passwords, tokens, private keys, Credential Manager exports, real UNC paths, usernames, or private IP addresses.
+  - type: input
+    id: version
+    attributes:
+      label: Application version
+      placeholder: v1.0.1
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 23H2
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Use a redacted example such as \\nas.example\media.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted error and diagnostics
+      description: Include a Windows error code if available, but remove passwords, UNC paths, usernames and local paths.

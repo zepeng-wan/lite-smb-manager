@@ -1,0 +1,1 @@
+"""Windows and filesystem adapters."""
